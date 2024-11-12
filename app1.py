@@ -1,20 +1,16 @@
 import streamlit as st
 import librosa
 import numpy as np
-from tensorflow.keras.models import load_model
+import pickle
 from sklearn.preprocessing import LabelEncoder
 
 # Load the pre-trained model and label encoder
-model = load_model('urdu_emotion_model.keras')  # Update path if necessary
+with open('urdu_emotion_model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 # Load the saved LabelEncoder classes (these should correspond to the emotion labels)
 label_encoder = LabelEncoder()
-
-# Ensure that classes.npy contains your emotion labels
 label_encoder.classes_ = np.load('classes.npy', allow_pickle=True)
-
-# Debugging: Check the loaded classes
-st.write(f"Classes loaded: {label_encoder.classes_}")
 
 # Mapping the class indices to corresponding emotions manually
 emotion_map = {0: 'Happy', 1: 'Sad', 2: 'Neutral', 3: 'Angry'}
